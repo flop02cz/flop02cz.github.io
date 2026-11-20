@@ -1,1 +1,699 @@
-Ahoj lidi
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AEROX | Svět letectví a aerodynamiky</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #060b14;
+      --bg-secondary: #0c1526;
+      --bg-card: #111d35;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border: rgba(148, 163, 184, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .logo {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Navigace */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(6, 11, 20, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #04101f;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      background: #7dd3fc;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Hero sekce s leteckou mřížkou */
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 2rem 4rem;
+      background: 
+        radial-gradient(circle at 75% 30%, rgba(56, 189, 248, 0.14), transparent 45%),
+        linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+        var(--bg-main);
+      background-size: 100% 100%, 40px 40px, 40px 40px, 100% 100%;
+    }
+
+    .hero-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 999px;
+      color: var(--accent);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 540px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Dekorativní radar / silueta letadla v Hero */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .radar-box {
+      width: 100%;
+      max-width: 440px;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .radar-box::before, .radar-box::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      border: 1px dashed rgba(56, 189, 248, 0.2);
+    }
+
+    .radar-box::before {
+      width: 70%;
+      height: 70%;
+    }
+
+    .radar-box::after {
+      width: 40%;
+      height: 40%;
+    }
+
+    /* Telemetrická lišta */
+    .telemetry-bar {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem;
+    }
+
+    .telemetry-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .stat-item h3 {
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-item p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Obecné sekce */
+    section {
+      padding: 5rem 2rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.2rem;
+    }
+
+    .section-header p {
+      color: var(--text-secondary);
+      max-width: 500px;
+    }
+
+    /* Filtry */
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent);
+      color: #04101f;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Karty letadel */
+    .aircraft-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+    }
+
+    .card-banner {
+      height: 190px;
+      background: linear-gradient(135deg, #0f2544 0%, #173763 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-tag {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: rgba(6, 11, 20, 0.75);
+      padding: 0.25rem 0.7rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .card-body h3 {
+      font-size: 1.35rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-body p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .specs-mini {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+    }
+
+    .specs-mini span {
+      display: block;
+      color: var(--text-secondary);
+    }
+
+    .specs-mini strong {
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    /* Technická sekce (Blueprint) */
+    .blueprint-section {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .blueprint-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .blueprint-box {
+      background: #071122;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 12px;
+      padding: 2rem;
+      background-image: 
+        linear-gradient(rgba(56, 189, 248, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.06) 1px, transparent 1px);
+      background-size: 20px 20px;
+      text-align: center;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-top: 1.5rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .feature-list li {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      background: var(--bg-card);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .feature-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-top: 0.45rem;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    /* Patička */
+    footer {
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* Responzivita */
+    @media (max-width: 860px) {
+      .hero-grid, .blueprint-grid {
+        grid-template-columns: 1fr;
+      }
+      .telemetry-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      nav ul {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Horní navigace -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+        </svg>
+        AERO<span>X</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="#flotila">Flotila</a></li>
+          <li><a href="#technologie">Technologie</a></li>
+          <li><a href="#historie">Historie</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </nav>
+      <a href="#flotila" class="btn btn-outline">Prozkoumat hangár</a>
+    </div>
+  </header>
+
+  <!-- Hlavní úvodní sekce -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="badge">● Letecký portál &amp; Encyklopedie</div>
+        <h1>Objevte krásu moderního letectví</h1>
+        <p>
+          Ukázkový úvodní text o světě letadel, aerodynamice a leteckém inženýrství. 
+          Zde může být popis tvého projektu, magazínu nebo databáze letecké techniky.
+        </p>
+        <div class="hero-actions">
+          <a href="#flotila" class="btn btn-primary">Přehled letadel</a>
+          <a href="#technologie" class="btn btn-outline">Technické nákresy</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="radar-box">
+          <!-- Stylizovaná vektorová silueta stíhacího / dopravního letounu -->
+          <svg width="220" height="220" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Telemetrická lišta -->
+  <div class="telemetry-bar">
+    <div class="telemetry-grid">
+      <div class="stat-item">
+        <h3>MACH 2.0+</h3>
+        <p>Ukázková rychlost</p>
+      </div>
+      <div class="stat-item">
+        <h3>45 000 ft</h3>
+        <p>Letová hladina</p>
+      </div>
+      <div class="stat-item">
+        <h3>14 500 km</h3>
+        <p>Maximální dolet</p>
+      </div>
+      <div class="stat-item">
+        <h3>24 / 7</h3>
+        <p>Letový provoz</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Katalog / Flotila letadel -->
+  <section id="flotila">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Kategorie letadel</h2>
+          <p>Ukázkové rozvržení karet pro jednotlivé modely letadel s možností filtrování.</p>
+        </div>
+        <div class="filter-tabs">
+          <button class="filter-btn active" onclick="filterCards('all', this)">Vše</button>
+          <button class="filter-btn" onclick="filterCards('dopravni', this)">Dopravní</button>
+          <button class="filter-btn" onclick="filterCards('vojenska', this)">Vojenská</button>
+          <button class="filter-btn" onclick="filterCards('historicka', this)">Historická</button>
+        </div>
+      </div>
+
+      <div class="aircraft-grid" id="aircraftGrid">
+        <!-- Karta 1 -->
+        <article class="card" data-category="dopravni">
+          <div class="card-banner">
+            <span class="card-tag">Dopravní letoun</span>
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.3">
+              <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <h3>Model Letadla Alpha-01</h3>
+            <p>Krátký zástupný popis dálkového dopravního letounu. Sem později doplníš zajímavosti a historii stroje.</p>
+            <div class="specs-mini">
+              <div><span>Rychlost</span><strong>920 km/h</strong></div>
+              <div><span>Kapacita</span><strong>320 osob</strong></div>
+              <div><span>Dolet</span><strong>13 000 km</strong></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Karta 2 -->
+        <article class="card" data-category="vojenska">
+          <div class="card-banner">
+            <span class="card-tag">Nadzvukový stíhač</span>
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.3">
+              <polygon points="12 2 19 21 12 17 5 21 12 2"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <h3>Stíhací letoun Falcon-X</h3>
+            <p>Zástupný text pro moderní taktický letoun. Ideální prostor pro popis manévrovatelnosti a avioniky.</p>
+            <div class="specs-mini">
+              <div><span>Rychlost</span><strong>Mach 2.2</strong></div>
+              <div><span>Dostup</span><strong>18 000 m</strong></div>
+              <div><span>Posádka</span><strong>1 pilot</strong></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Karta 3 -->
+        <article class="card" data-category="historicka">
+          <div class="card-banner">
+            <span class="card-tag">Historický klasický</span>
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.3">
+              <circle cx="12" cy="12" r="9"/>
+              <line x1="12" y1="3" x2="12" y2="21"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <h3>Vrtulový veterán Mk.IV</h3>
+            <p>Zástupný text pro legendární stroj z počátků letectví. Později zde může být rok výroby a konstrukce.</p>
+            <div class="specs-mini">
+              <div><span>Rychlost</span><strong>540 km/h</strong></div>
+              <div><span>Motor</span><strong>V12 Pístový</strong></div>
+              <div><span>Rok</span><strong>1942</strong></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technická / Blueprint sekce -->
+  <section id="technologie" class="blueprint-section">
+    <div class="container">
+      <div class="blueprint-grid">
+        <div class="blueprint-box">
+          <svg width="100%" height="240" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Technický nákres křídla a trupu -->
+            <line x1="20" y1="100" x2="380" y2="100" stroke="#38bdf8" stroke-dasharray="4 4" stroke-opacity="0.5"/>
+            <line x1="200" y1="15" x2="200" y2="185" stroke="#38bdf8" stroke-dasharray="4 4" stroke-opacity="0.5"/>
+            <path d="M70 100 C110 85, 260 85, 340 100 C260 115, 110 115, 70 100 Z" stroke="#38bdf8" stroke-width="2" fill="rgba(56,189,248,0.08)"/>
+            <path d="M175 92 L225 25 L245 25 L215 92" stroke="#38bdf8" stroke-width="1.8" fill="rgba(56,189,248,0.05)"/>
+            <path d="M175 108 L225 175 L245 175 L215 108" stroke="#38bdf8" stroke-width="1.8" fill="rgba(56,189,248,0.05)"/>
+            <path d="M310 96 L345 65 L358 65 L335 98" stroke="#38bdf8" stroke-width="1.5"/>
+            <path d="M310 104 L345 135 L358 135 L335 102" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="25" y="30" fill="#38bdf8" font-family="monospace" font-size="11">SCHEMA // AERO-FRAME 09</text>
+            <text x="25" y="180" fill="#94a3b8" font-family="monospace" font-size="10">SCALE 1:100 | VECTOR HUD</text>
+          </svg>
+        </div>
+
+        <div>
+          <h2>Aerodynamika &amp; Konstrukce</h2>
+          <p style="color: var(--text-secondary); margin-top: 0.75rem;">
+            Tato sekce slouží pro technické zajímavosti, vysvětlení principů letu nebo rozbor kokpitu.
+          </p>
+          <ul class="feature-list">
+            <li>
+              <div class="feature-dot"></div>
+              <div>
+                <strong>Proudové a pístové motory</strong>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Ukázkový popisek první technologické oblasti tvého webu.</p>
+              </div>
+            </li>
+            <li>
+              <div class="feature-dot"></div>
+              <div>
+                <strong>Moderní avionika a radary</strong>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Ukázkový popisek druhé oblasti, kam později vložíš vlastní text.</p>
+              </div>
+            </li>
+            <li>
+              <div class="feature-dot"></div>
+              <div>
+                <strong>Kompozitní materiály trupu</strong>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Ukázkový popisek třetí oblasti s čistým grafickým oddělením.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Patička -->
+  <footer id="kontakt">
+    <div class="footer-content">
+      <div class="logo" style="font-size: 1.1rem;">AERO<span>X</span></div>
+      <p>© 2026 Letecký web – Grafická šablona pro GitHub Pages</p>
+    </div>
+  </footer>
+
+  <!-- Jednoduchý skript pro filtrování karet -->
+  <script>
+    function filterCards(category, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      document.querySelectorAll('.card').forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
